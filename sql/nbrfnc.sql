@@ -124,12 +124,20 @@ BEGIN
         
         raise notice 'Reblocking Layer %/%. %',layer,usepkey,clock_timestamp();
         execute 'select GeometryType(wkb_geometry::geometry) from '||quote_ident(layer) into gtype;
+        execute 'select DISTINCT ST_SRID(wkb_geometry) from '||quote_ident(layer) into defsrid;
         
         if gtype in ('POLYGON','MULTIPOLYGON') then
+            raise notice 'gtype of layer is polygon';
+            raise notice 'running reblockersplitter on that layer...';
             res = reblocksplitter(layer, prefix, usepkey, boundary, join_func_poly,True);
         elsif gtype in ('LINESTRING','MULTILINESTRING') then
+            raise notice 'gtype of layer is of linestring';
+            raise notice 'running reblockersplitter on that layer...';
             res = reblocksplitter(layer, prefix, usepkey, boundary, join_func_line,False);
         end if;
+        layer_new = 'new_'||layer;
+        --Table altered here to fix issue after upgrade to PG16 and invalid geom type and srid being written to db.
+        execute format('ALTER TABLE %s ALTER Column wkb_geometry type geometry(%s, %s)', layer_new, gtype, defsrid);
     end loop;
     raise notice 'Reblocking Complete. %',clock_timestamp();
 RETURN True;
