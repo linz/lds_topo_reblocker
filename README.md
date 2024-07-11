@@ -26,9 +26,9 @@ Since the end destination of the seamless feature sets produced by the Topo Rebl
 # USAGE
 Command line usage:
 On Windows corporate machines, put your shapefiles you want reblocked into a directory on your local machine
-C:\Users\<your_user_name>\Documents\reblock_lines
+For example: C:\Users\<your_user_name>\Documents\reblock_lines
 
-Open the QGIS OSGEO4W shell, and run a command like this (for example):
+Open the QGIS OSGEO4W shell, and run a command like this (example):
 ```
 python3 LayerReader.py -d C:\Users\<your_user_name>\Documents\reblock_lines -s -o -u t250_fid
 ```
