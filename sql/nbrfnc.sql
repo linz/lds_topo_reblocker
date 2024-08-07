@@ -77,6 +77,7 @@ DECLARE
     rc int;
     layer character varying;
     gtype character varying;
+    layer_new character varying;
     schma character varying := 'public';
     xtabl character varying := 'spatial_ref_sys';
     defsrid int := 2193;
